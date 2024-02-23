@@ -6,12 +6,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-L.marker([51.5, -0.09]).addTo(map)
-    .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-    .openPopup();
 
-
-// const marker = L.marker([0, 0], { icon: locationIcon }).addTo(map);
 // ? -- Initializeing Leaflet Map -- End --
 
 
@@ -45,14 +40,9 @@ $(document).ready(function () {
             const apiKey = 'at_cN9sbigpoMYpA6dMC8QeqMzeMnJ2e';
 
             // ? -- Sending location Requset --
-            // fetch(`https://ipapi.co/${ip_value}/json/`)
-            // fetch(`https://geo.ipify.org/api/v2/country?apiKey=${apiKey}&ipAddress=${ip_value}`)
-            // .then(res => res.json())
-            // .then(data => renderResults(data))
-            // .catch(error => displayError(error));
 
             $.ajax({
-                url: `https://geo.ipify.org/api/v2/country?apiKey=${apiKey}&ipAddress=${ip_value}`,
+                url: `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${ip_value}`,
                 type: 'GET',
                 dataType: 'json',
                 error: (error) => {
@@ -79,18 +69,17 @@ $(document).ready(function () {
         // if (data.error) {
         //     throw(`${data.reason}`);
         // }
-        // ipEl.textContent = data.ip;
-        // locationEl.textContent = `${data.city}, ${data.region}, ${data.country_name}`;
-        // if (data.utc_offset !== null) {
-        //     timezoneEl.textContent = 'UTC: ' + data.utc_offset.slice(0, 3) + ':' + data.utc_offset.slice(3);
-        // }
-        // else {
-        //     timezoneEl.textContent = data.timezone;
-        // }
-        // ispEl.textContent = data.org;
-        // map.setView([data.latitude, data.longitude], 13);
-        // marker.setLatLng([data.latitude, data.longitude]);
-        // marker.bindPopup(`<b>${data.ip}</b>`).openPopup();
+
+        $('#ip-info').text(data.ip);
+        $('#location-info').text(`${data.location.city}, ${data.location.country}, ${data.location.region}`);
+        $('#isp-info').text(data.isp);
+
+        $('#timezone-info').text(data.location.timezone);
+
+        map.setView([data.location.lat, data.location.lng], 13);
+        L.marker([data.location.lat, data.location.lng]).addTo(map)
+            .bindPopup(`<b>${data.location.city}, ${data.location.country}</b>`)
+            .openPopup();
     }
 
     function displayError(error) {
