@@ -19,6 +19,7 @@ $(document).ready(function () {
     // ? -- Submiting Form --Start--
     $(document).on('submit', '#form', function (event) {
         event.preventDefault();
+        $('#cover-spin').show(0)
 
         var flag;
         flag = true;
@@ -26,6 +27,8 @@ $(document).ready(function () {
 
         var ip_value = $('#ip-input').val();
         if (ip_value == "") {
+            $('#cover-spin').hide(0)
+
             flag = false;
             iziToast.error({
                 theme: 'light',
@@ -36,8 +39,9 @@ $(document).ready(function () {
         }
 
 
-
         if (flag) {
+            $('#cover-spin').show(0)
+
             const apiKey = 'at_cN9sbigpoMYpA6dMC8QeqMzeMnJ2e';
 
             // ? -- Sending location Requset --
@@ -48,13 +52,17 @@ $(document).ready(function () {
             // .catch(error => displayError(error));
 
             $.ajax({
-                url :  `https://geo.ipify.org/api/v2/country?apiKey=${apiKey}&ipAddress=${ip_value}`,
-                type : 'GET',
+                url: `https://geo.ipify.org/api/v2/country?apiKey=${apiKey}&ipAddress=${ip_value}`,
+                type: 'GET',
                 dataType: 'json',
-                error : (error) => {
+                error: (error) => {
+                    $('#cover-spin').hide(0)
+
                     displayError(error);
                 },
-                success : (data) => {
+                success: (data) => {
+                    $('#cover-spin').hide(0)
+
                     renderResults(data);
                 },
             })
@@ -85,7 +93,7 @@ $(document).ready(function () {
         // marker.bindPopup(`<b>${data.ip}</b>`).openPopup();
     }
 
-    function displayError(error){
+    function displayError(error) {
         var msg = error.responseJSON.messages;
         iziToast.error({
             theme: 'light',
