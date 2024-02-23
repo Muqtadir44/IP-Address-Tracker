@@ -34,7 +34,7 @@ $(document).ready(function () {
                 theme: 'light',
                 position: 'topRight',
                 title: 'Error',
-                message: 'Please enter an IP address or domain!',
+                message: 'Please enter an IP address!',
             });
         }
 
